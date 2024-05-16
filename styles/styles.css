@@ -208,3 +208,8 @@ main .section.light,
 main .section.highlight {
   background-color: var(--light-color);
 }
+
+main {
+  background-color: cyan;
+  color: magenta;
+}
