@@ -1,11 +1,9 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
-import { fetchPlaceholders, getMetadata } from '../../scripts/aem.js';
+import { fetchPlaceholders } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
   const placeholders = await fetchPlaceholders('');
-  const {click} = placeholders;
-  console.log(click);
-  
+  const { click } = placeholders;
   /* change to ul, li */
   const ul = document.createElement('ul');
   [...block.children].forEach((row) => {
