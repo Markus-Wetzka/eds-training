@@ -1,5 +1,4 @@
-import { createOptimizedPicture } from '../../scripts/aem.js';
-import { fetchPlaceholders } from '../../scripts/aem.js';
+import { createOptimizedPicture, fetchPlaceholders } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
   const placeholders = await fetchPlaceholders('');
