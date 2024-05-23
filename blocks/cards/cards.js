@@ -3,6 +3,7 @@ import { createOptimizedPicture, fetchPlaceholders } from '../../scripts/aem.js'
 export default async function decorate(block) {
   const placeholders = await fetchPlaceholders('');
   const { click } = placeholders;
+  //console.log(click);
   /* change to ul, li */
   const ul = document.createElement('ul');
   [...block.children].forEach((row) => {
@@ -15,7 +16,7 @@ export default async function decorate(block) {
     ul.append(li);
   });
   ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
-  console.log(ul.querySelectorAll('cards-card-body').length);
+  //console.log(ul.querySelectorAll('cards-card-body').length);
   ul.querySelectorAll('cards-card-body').forEach((cardBody) => cardBody.appendChild(document.createTextNode(click)));
   block.textContent = '';
   block.append(ul);
