@@ -1,0 +1,14 @@
+.social{
+    padding: 5px;
+    top: 0;
+    width: 100;
+    left: 0;
+}
+
+.social-img{
+    width: 10%;
+}
+
+.social p {
+    font-size: 2rem;
+}
