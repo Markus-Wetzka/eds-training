@@ -1,5 +1,3 @@
-import { addInViewAnimationToSingleElement } from '../../utils/helpers.js';
-
 function createSelect(fd) {
   const select = document.createElement('select');
   select.id = fd.Field;
@@ -36,8 +34,7 @@ function constructPayload(form) {
 
 async function submitForm(form) {
   const payload = constructPayload(form);
-  payload.timestamp = new Date().toJSON();
-  const resp = await fetch(`https://form.aem.page/main--helix-website--adobe${form.dataset.action}`, {
+  const resp = await fetch(form.dataset.action, {
     method: 'POST',
     cache: 'no-cache',
     headers: {
@@ -56,7 +53,6 @@ function createButton(fd) {
   if (fd.Type === 'submit') {
     button.addEventListener('click', async (event) => {
       const form = button.closest('form');
-      if (fd.Placeholder) form.dataset.action = fd.Placeholder;
       if (form.checkValidity()) {
         event.preventDefault();
         button.setAttribute('disabled', '');
@@ -69,8 +65,8 @@ function createButton(fd) {
   return button;
 }
 
-function createHeading(fd, el) {
-  const heading = document.createElement(el);
+function createHeading(fd) {
+  const heading = document.createElement('h3');
   heading.textContent = fd.Label;
   return heading;
 }
@@ -122,16 +118,7 @@ function applyRules(form, rules) {
   });
 }
 
-function fill(form) {
-  const { action } = form.dataset;
-  if (action === '/tools/bot/register-form') {
-    const loc = new URL(window.location.href);
-    form.querySelector('#owner').value = loc.searchParams.get('owner') || '';
-    form.querySelector('#installationId').value = loc.searchParams.get('id') || '';
-  }
-}
-
-export async function createForm(formURL) {
+async function createForm(formURL) {
   const { pathname } = new URL(formURL);
   const resp = await fetch(pathname);
   const json = await resp.json();
@@ -152,10 +139,7 @@ export async function createForm(formURL) {
         fieldWrapper.append(createSelect(fd));
         break;
       case 'heading':
-        fieldWrapper.append(createHeading(fd, 'h3'));
-        break;
-      case 'legal':
-        fieldWrapper.append(createHeading(fd, 'p'));
+        fieldWrapper.append(createHeading(fd));
         break;
       case 'checkbox':
         fieldWrapper.append(createInput(fd));
@@ -186,13 +170,12 @@ export async function createForm(formURL) {
 
   form.addEventListener('change', () => applyRules(form, rules));
   applyRules(form, rules);
-  fill(form);
+
   return (form);
 }
 
 export default async function decorate(block) {
   const form = block.querySelector('a[href$=".json"]');
-  addInViewAnimationToSingleElement(block, 'fade-up');
   if (form) {
     form.replaceWith(await createForm(form.href));
   }
