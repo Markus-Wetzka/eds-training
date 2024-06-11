@@ -1,22 +1,22 @@
 export default async function decorate(block) {
-  let response = await fetch('/query-index.json');
-  let data = await response.json();
-  for (const magazine of data.data) {
-    if(magazine.path.startsWith('/us/en/magazine/')){
-      let title = document.createElement('h3');
+  const response = await fetch('/query-index.json');
+  const data = await response.json();
+  data.data.forEach(magazine => {
+    if (magazine.path.startsWith('/us/en/magazine/')) {
+      const title = document.createElement('h3');
       title.textContent = magazine.title;
       block.append(title);
-
-      let description = document.createElement('p');
+      
+      const description = document.createElement('p');
       description.textContent = magazine.description;
       block.append(description);
-
-      let link = document.createElement('a');
-      let linkText = document.createTextNode("Read more");
+      
+      const link = document.createElement('a');
+      const linkText = document.createTextNode('Read more');
       link.appendChild(linkText);
-      link.title = "Read more";
+      link.title = 'Read more';
       link.href = magazine.path;
       block.append(link);
-    }
-  }
+    }    
+  });
 }
